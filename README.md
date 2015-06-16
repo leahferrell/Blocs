@@ -4,9 +4,8 @@ This is my first attempt at making a game without a tutorial.
 It has a few bugs that I'm working on, but it's mostly completed at this point.
 
 Screenshots:
-![Screen1](./Screenshots/IMG_0407.PNG "Hit Block")
 
-![Screen2](./Screenshots/IMG_0408.PNG "Lost Life")
+![Screens](./Screenshots/fullscreenshots.png "Screenshots")
 
 
 Now on to the next challenge!
