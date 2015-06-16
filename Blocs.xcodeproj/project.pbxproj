@@ -57,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		082C6D231B3072C5002D7F57 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		08D9C14A1B306B7800C26C91 /* Blocs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blocs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08D9C14E1B306B7800C26C91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08D9C14F1B306B7800C26C91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 		08D9C1411B306B7800C26C91 = {
 			isa = PBXGroup;
 			children = (
+				082C6D231B3072C5002D7F57 /* README.md */,
 				08D9C14C1B306B7800C26C91 /* Blocs */,
 				08D9C1661B306B7800C26C91 /* BlocsTests */,
 				08D9C14B1B306B7800C26C91 /* Products */,
@@ -567,6 +569,7 @@
 				08D9C16F1B306B7800C26C91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		08D9C1701B306B7800C26C91 /* Build configuration list for PBXNativeTarget "BlocsTests" */ = {
 			isa = XCConfigurationList;
@@ -575,6 +578,7 @@
 				08D9C1721B306B7800C26C91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
