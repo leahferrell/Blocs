@@ -9,7 +9,15 @@
 import SpriteKit
 import UIKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
+    struct PhysicsCategory {
+        static let None:  UInt32 = 0
+        static let Ball:   UInt32 = 0b1   // 1
+        static let Block: UInt32 = 0b10  // 2
+        static let Paddle:   UInt32 = 0b100 // 4
+        static let Edge:  UInt32 = 0b1000 // 8
+    }
+    
     let scoreLayerNode = SKNode()
     let controllerLayerNode = SKNode()
     let blockLayerNode = SKNode()
@@ -22,15 +30,10 @@ class GameScene: SKScene {
     var flashAction:SKAction!
     var livesLabel = SKLabelNode(fontNamed: "Marker Felt Thin")
     var pause = true
-    var lastUpdateTime: NSTimeInterval = 0
-    var dt: NSTimeInterval = 0
     var score = 0
     var lives = 5
     let explodeEmitter:SKEmitterNode = SKEmitterNode(fileNamed: "enemyDeath.sks")
     var ball:Ball!
-    var moveVector = CGVector()
-    var exitedPaddle = false
-    var exitedSide = true
     var blocksLeft = 0
     
     required init(coder aDecoder: NSCoder){
@@ -44,6 +47,11 @@ class GameScene: SKScene {
         playableRect = CGRect(x: playableMargin, y: 64, width: maxAspectRatioWidth-140, height: size.height-230)
         
         super.init(size: size)
+        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        physicsBody = SKPhysicsBody(edgeLoopFromRect: playableRect)
+        physicsWorld.contactDelegate = self
+        physicsBody?.friction = 0.0
+        
         setupSceneLayers()
         setupUI()
         setupEntities()
@@ -112,9 +120,22 @@ class GameScene: SKScene {
     func setupEntities(){
         paddle = Paddle(position: CGPoint(x: size.width/2, y: 100))
         paddle.name = "paddle"
+        paddle.physicsBody = SKPhysicsBody(rectangleOfSize: paddle.frame.size)
+        paddle.physicsBody?.dynamic = false
+        paddle.physicsBody?.categoryBitMask = PhysicsCategory.Paddle
+        paddle.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         blockLayerNode.addChild(paddle)
+        
+        
         ball = Ball(position: paddle.position)
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2)
         ball.hidden = true
+        ball.physicsBody?.restitution = 1.0
+        ball.physicsBody?.categoryBitMask = PhysicsCategory.Ball
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.Paddle | PhysicsCategory.Block
+        ball.physicsBody!.contactTestBitMask = PhysicsCategory.Block
+        ball.physicsBody?.friction = 0.0
+        ball.physicsBody?.linearDamping = 0.0
         blockLayerNode.addChild(ball)
         
         //Blocks
@@ -148,6 +169,11 @@ class GameScene: SKScene {
                 }
                 let block = Block(position: point)
                 block.name = "block"
+                block.physicsBody = SKPhysicsBody(rectangleOfSize: block.frame.size)
+                block.physicsBody?.dynamic = false
+                block.physicsBody?.categoryBitMask = PhysicsCategory.Block
+                block.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+                block.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
                 blockLayerNode.addChild(block)
             }
         }
@@ -158,6 +184,7 @@ class GameScene: SKScene {
             let block = node as! SKSpriteNode
             block.removeFromParent()
         }
+        blocksLeft = 0
     }
     
     override func didMoveToView(view: SKView) {
@@ -167,7 +194,6 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        //let touch = touches.first as! UITouch
         for touch:AnyObject in touches {
             let location1 = touch.locationInNode(controllerLayerNode)
             let location2 = touch.locationInNode(blockLayerNode)
@@ -184,14 +210,14 @@ class GameScene: SKScene {
     }
     
     func shootBall(pointB: CGPoint){
-        let pointA = paddle.position
-        let unitVector = (pointB - pointA).normalized()
-        moveVector = CGVector(dx: unitVector.x, dy: unitVector.y)
-        let shootAction = SKAction.moveBy(moveVector, duration: 0.005)
+        let pointA = paddle.position + CGPoint(x: 0, y: paddle.frame.height/2)
+        let unitVector = (pointB - pointA)
+        let moveVector = CGVector(dx: unitVector.x, dy: unitVector.y)
+        
+        ball.physicsBody?.applyForce(moveVector)
+        
         ball.position = pointA
         ball.hidden = false
-        exitedPaddle = false
-        ball.runAction(SKAction.repeatActionForever(shootAction))
     }
     
     func hitBlock(block:SKNode){
@@ -214,8 +240,6 @@ class GameScene: SKScene {
     }
     
     func displayShootBox(){
-        exitedPaddle = false
-        exitedSide = true
         pause = true
         let boxSprite = SKSpriteNode(color: UIColor.whiteColor(), size: CGSize(width: playableRect.width, height: playableRect.width))
         boxSprite.anchorPoint = CGPointZero
@@ -288,44 +312,12 @@ class GameScene: SKScene {
         deltaPoint = CGPointZero
     }
     
-    func checkHitBlock(){
-        let pos = ball.position
-        let node = self.nodeAtPoint(pos)
-        if node.name == "block" {
-            hitBlock(node)
-            ball.removeAllActions()
-            var newVector = CGVector(dx: moveVector.dx, dy: -1 * moveVector.dy)
-            moveVector = newVector
-            ball.runAction(SKAction.repeatActionForever(SKAction.moveBy(moveVector, duration: 0.005)))
+    func didBeginContact(contact: SKPhysicsContact) {
+        if contact.bodyA.node?.name == "block" {
+            hitBlock(contact.bodyA.node!)
         }
-    }
-    
-    func checkInBounds(){
-        let pos = ball.position
-        let margin = ball.frame.height/2
-        
-        if (pos.x <= playableRect.minX+margin) || (pos.x >= playableRect.maxX-margin) || (pos.y >= playableRect.maxY-margin) {
-            if (pos.x <= playableRect.minX+margin) || (pos.x >= playableRect.maxX-margin) {
-                if exitedSide {
-                    ball.removeAllActions()
-                    var newVector = CGVector(dx: -1 * moveVector.dx, dy: moveVector.dy)
-                    moveVector = newVector
-                    ball.runAction(SKAction.repeatActionForever(SKAction.moveBy(moveVector, duration: 0.005)))
-                    exitedSide = false
-                }
-            }
-            if (pos.y >= playableRect.maxY-margin) {
-                if exitedSide{
-                    ball.removeAllActions()
-                    var newVector = CGVector(dx: moveVector.dx, dy: -1 * moveVector.dy)
-                    moveVector = newVector
-                    ball.runAction(SKAction.repeatActionForever(SKAction.moveBy(moveVector, duration: 0.005)))
-                    exitedSide = false
-                }
-            }
-        }
-        else{
-            exitedSide = true
+        else if contact.bodyB.node?.name == "block" {
+            hitBlock(contact.bodyB.node!)
         }
     }
     
@@ -333,9 +325,10 @@ class GameScene: SKScene {
         let pos = ball.position
         let margin = ball.frame.height/2
         
-        if (pos.y <= playableRect.minY+margin) {
+        if (pos.y <= paddle.frame.minY) {
             ball.removeAllActions()
             ball.hidden = true
+            ball.physicsBody?.resting = true
             pause = true
             lives--
             livesLabel.text = "Lives: \(lives)"
@@ -351,38 +344,13 @@ class GameScene: SKScene {
     func checkWin(){
         if blocksLeft == 0 {
             pause = true
-            ball.removeAllActions()
             ball.hidden = true
+            ball.physicsBody?.resting = true
             displayGameOver("You won!")
         }
     }
     
-    func checkHitPaddle(){
-        let pos = ball.position
-        let node = self.nodeAtPoint(pos)
-        
-        if CGRectIntersectsRect(paddle.frame, ball.frame) || node.name == "paddle" {
-            if exitedPaddle{
-                ball.removeAllActions()
-                var newVector = CGVector(dx: moveVector.dx, dy: -1 * moveVector.dy)
-                moveVector = newVector
-                ball.runAction(SKAction.repeatActionForever(SKAction.moveBy(moveVector, duration: 0.005)))
-                exitedPaddle = false
-            }
-        }
-        else{
-            exitedPaddle = true
-        }
-    }
-    
     override func update(currentTime: CFTimeInterval) {
-        if lastUpdateTime > 0 {
-            dt = currentTime - lastUpdateTime
-        } else {
-            dt = 0
-        }
-        lastUpdateTime = currentTime
-        
         var newPoint = CGPoint(x: paddle.position.x + deltaPoint.x, y: paddle.position.y)
         newPoint.x.clamp(
             CGRectGetMinX(playableRect), CGRectGetMaxX(playableRect))
@@ -390,11 +358,9 @@ class GameScene: SKScene {
             CGRectGetMinY(playableRect),CGRectGetMaxY(playableRect))
         paddle.position = newPoint
         deltaPoint = CGPointZero
+        
         if !pause {
-            checkInBounds()
             checkLostLife()
-            checkHitBlock()
-            checkHitPaddle()
             checkWin()
         }
     }
