@@ -20,6 +20,11 @@ class Paddle: SKSpriteNode {
         self.xScale = 0.25
         self.yScale = 0.25
         self.position = position
+        self.name = "paddle"
+        self.physicsBody = SKPhysicsBody(rectangleOfSize: frame.size)
+        self.physicsBody?.dynamic = false
+        self.physicsBody?.categoryBitMask = PhysicsCategory.Paddle
+        self.physicsBody?.collisionBitMask = PhysicsCategory.Ball
     }
     
     func update(delta: NSTimeInterval){

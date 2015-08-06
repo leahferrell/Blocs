@@ -20,6 +20,13 @@ class Block: SKSpriteNode {
         let texture = SKTexture(imageNamed: "Block\(randomNum)")
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
         self.position = position
+        
+        self.name = "block"
+        self.physicsBody = SKPhysicsBody(rectangleOfSize: self.frame.size)
+        self.physicsBody?.dynamic = false
+        self.physicsBody?.categoryBitMask = PhysicsCategory.Block
+        self.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
     }
     
     func update(delta: NSTimeInterval){
