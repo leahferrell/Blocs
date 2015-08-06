@@ -348,6 +348,15 @@ class GameScene: SKScene {
         }
     }
     
+    func checkWin(){
+        if blocksLeft == 0 {
+            pause = true
+            ball.removeAllActions()
+            ball.hidden = true
+            displayGameOver("You won!")
+        }
+    }
+    
     func checkHitPaddle(){
         let pos = ball.position
         let node = self.nodeAtPoint(pos)
@@ -386,9 +395,7 @@ class GameScene: SKScene {
             checkLostLife()
             checkHitBlock()
             checkHitPaddle()
-        }
-        if blocksLeft == 0 {
-            displayGameOver("You won!")
+            checkWin()
         }
     }
 }
