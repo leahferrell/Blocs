@@ -22,7 +22,7 @@ class LostLevelScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
-        var background = SKSpriteNode(color: UIColor.blueColor(), size: size)
+        let background = SKSpriteNode(imageNamed:"background3")
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
         self.addChild(background)
     }
