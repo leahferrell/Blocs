@@ -26,8 +26,8 @@ class Grid: SKNode {
     func setup(){
         blocksLeft = 100
         
-        let blockSize = CGFloat(36)
-        let spaceSize = CGFloat(4)
+        let blockSize = CGFloat(72)
+        let spaceSize = CGFloat(8)
         var point:CGPoint
         var yoffset:CGFloat
         

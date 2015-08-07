@@ -10,7 +10,6 @@ import SpriteKit
 import UIKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
     let scoreLayerNode = SKNode()
     let controllerLayerNode = SKNode()
     let blockLayerNode = SKNode()
@@ -33,16 +32,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var pause = true
     var score = 0
     var lives = 5
+    let level:Int
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
-    override init(size: CGSize){
+    init(size: CGSize, level: Int){
         let maxAspectRatio: CGFloat = 16.0/9.0
         let maxAspectRatioWidth = size.height / maxAspectRatio
-        let playableMargin = (size.width - maxAspectRatioWidth) / 2.0 + 70
-        playableRect = CGRect(x: playableMargin, y: 64, width: maxAspectRatioWidth-140, height: size.height-230)
+        let playableMargin = (size.width - maxAspectRatioWidth) / 2.0 + 140
+        playableRect = CGRect(x: playableMargin, y: 128, width: maxAspectRatioWidth-280, height: size.height-460)
+        self.level = level
         
         super.init(size: size)
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
@@ -70,13 +71,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupUI(){
         let background = SKSpriteNode(imageNamed: "background6")
-        background.xScale = 0.5
-        background.yScale = 0.5
         background.position = CGPoint(x: size.width/2, y: size.height/2)
         backgroundLayerNode.addChild(background)
         
         //HUD
-        scoreLabel.fontSize = 50
+        scoreLabel.fontSize = 100
         scoreLabel.text = "Score: \(score)"
         scoreLabel.name = "scoreLabel"
         scoreLabel.fontColor = SKColor.blackColor()
@@ -90,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             SKAction.scaleTo(1.25, duration: 0.2),
             SKAction.scaleTo(1.0, duration: 0.2)])
         
-        livesLabel.fontSize = 50
+        livesLabel.fontSize = 100
         livesLabel.text = "Lives: \(lives)"
         livesLabel.name = "livesLabel"
         livesLabel.fontColor = SKColor.blackColor()
@@ -106,7 +105,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupEntities(){
-        paddle = Paddle(position: CGPoint(x: size.width/2, y: 100))
+        paddle = Paddle(position: CGPoint(x: size.width/2, y: 200))
         ball = Ball(position: paddle.position)
         blockGrid = Grid(playableRect: playableRect)
         
@@ -132,20 +131,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // ********************** End of Debug Functions
     
     
-    // ********************** Start of Reset Functions
-    func resetGame(node:SKNode){
-        blockGrid.resetBlocks()
-        removeGameOver(node)
-        ball.position = paddle.position
-        score = 0
-        lives = 5
-        scoreLabel.text = "Score: \(score)"
-        livesLabel.text = "Lives: \(lives)"
-        displayShootBox()
-    }
-    // ********************** End of Reset Functions
-    
-    
     // ********************** Start of Pop-up Panels Functions
     func removeShootBox(node:SKNode){
         node.removeAllActions()
@@ -157,7 +142,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pause = true
         let boxSprite = SKSpriteNode(color: UIColor.whiteColor(), size: CGSize(width: playableRect.width, height: playableRect.width))
         boxSprite.anchorPoint = CGPointZero
-        boxSprite.position = CGPoint(x: playableRect.minX,y:playableRect.height/2+playableRect.minY-40)
+        boxSprite.position = CGPoint(x: playableRect.minX,y:playableRect.height/2+playableRect.minY-80)
         boxSprite.alpha = 0.5
         boxSprite.name = "boxSprite"
         
@@ -166,7 +151,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         clickLabel.fontColor = UIColor.blackColor()
         clickLabel.position = CGPoint(x: boxSprite.frame.width / 2, y: boxSprite.frame.height/2)
         clickLabel.zPosition = 125
-        clickLabel.fontSize = 50
+        clickLabel.fontSize = 100
         
         clickLabel.runAction(SKAction.repeatActionForever(flashAction))
         
@@ -174,36 +159,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         controllerLayerNode.addChild(boxSprite)
     }
-    
-    func displayGameOver(text:String){
-        let boxSprite = SKSpriteNode(color: UIColor.whiteColor(), size: CGSize(width: playableRect.width, height: playableRect.width))
-        boxSprite.anchorPoint = CGPointZero
-        boxSprite.position = CGPoint(x: playableRect.minX,y:playableRect.height/2+playableRect.minY-40)
-        boxSprite.alpha = 0.5
-        boxSprite.name = "gameOverSprite"
-        
-        let clickLabel = SKLabelNode(fontNamed: "Marker Felt Thin")
-        clickLabel.text = text
-        clickLabel.fontColor = UIColor.blackColor()
-        clickLabel.position = CGPoint(x: boxSprite.frame.width / 2, y: boxSprite.frame.height/2)
-        clickLabel.zPosition = 125
-        clickLabel.fontSize = 50
-        
-        boxSprite.addChild(clickLabel)
-        controllerLayerNode.addChild(boxSprite)
-    }
-    
-    func removeGameOver(node:SKNode){
-        node.removeAllActions()
-        node.removeFromParent()
-    }
     // ********************** End of Pop-up Panels Functions
     
     
     // ********************** Start of Movement Mechanics Functions
     func shootBall(pointB: CGPoint){
         let pointA = paddle.position + CGPoint(x: 0, y: paddle.frame.height/2)
-        let vectorPoint = (pointB - pointA)
+        let vectorPoint = (pointB - pointA) * 2
         let moveVector = CGVector(dx: vectorPoint.x, dy: vectorPoint.y)
         
         ball.physicsBody?.applyForce(moveVector)
@@ -229,9 +191,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if (pause && node.name == "boxSprite") {
                 removeShootBox(node)
                 shootBall(location)
-            }
-            else if (pause && node.name == "gameOverSprite") {
-                resetGame(node)
             }
         }
     }
@@ -281,18 +240,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 displayShootBox()
             }
             else{
-                displayGameOver("Game Over...")
+                lostLevel()
             }
         }
     }
     
     func checkWin(){
         if blockGrid.blocksLeft == 0 {
-            pause = true
-            ball.hidden = true
-            ball.physicsBody?.resting = true
-            displayGameOver("You won!")
+            finishedLevel()
         }
+    }
+    
+    func finishedLevel(){
+        pause = true
+        ball.hidden = true
+        ball.physicsBody?.resting = true
+        
+        let levelEndScene = WonLevelScene(size: size, level: self.level)
+        levelEndScene.scaleMode = scaleMode
+        
+        let reveal = SKTransition.crossFadeWithDuration(0.5)
+        view?.presentScene(levelEndScene, transition: reveal)
+    }
+    
+    func lostLevel(){
+        let levelEndScene = LostLevelScene(size: size, level: self.level)
+        levelEndScene.scaleMode = scaleMode
+        
+        let reveal = SKTransition.crossFadeWithDuration(0.5)
+        view?.presentScene(levelEndScene, transition: reveal)
     }
     
     override func update(currentTime: CFTimeInterval) {

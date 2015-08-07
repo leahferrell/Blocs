@@ -17,8 +17,8 @@ class Paddle: SKSpriteNode {
     init(position: CGPoint){
         let texture = SKTexture(imageNamed: "paddle")
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
-        self.xScale = 0.25
-        self.yScale = 0.25
+        self.xScale = 0.5
+        self.yScale = 0.5
         self.position = position
         self.name = "paddle"
         self.physicsBody = SKPhysicsBody(rectangleOfSize: frame.size)

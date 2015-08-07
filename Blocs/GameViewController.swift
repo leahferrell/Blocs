@@ -13,7 +13,7 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let scene = GameScene(size: CGSize(width: 768, height: 1024))
+        let scene = MainMenuScene(size: CGSize(width: 1536, height: 2048))
         let skView = self.view as! SKView
         //skView.showsPhysics = true
         skView.ignoresSiblingOrder = false

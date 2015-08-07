@@ -43,7 +43,7 @@ class Box: SKSpriteNode {
                 x: playableRect.minX+playableRect.width/2,
                 y: playableRect.height/2+playableRect.minY-40-playableRect.width/2)
             clickLabel.zPosition = 125
-            clickLabel.fontSize = 50
+            clickLabel.fontSize = 100
             
             boxSprite.addChild(clickLabel)
             // 5

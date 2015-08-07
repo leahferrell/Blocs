@@ -17,8 +17,8 @@ class Ball: SKSpriteNode {
     init(position: CGPoint){
         let texture = SKTexture(imageNamed: "Ball")
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
-        self.xScale = 0.5
-        self.yScale = 0.5
+        //self.xScale = 0.5
+        //self.yScale = 0.5
         self.position = position
         
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
