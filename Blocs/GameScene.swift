@@ -20,6 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var paddle:Paddle!
     var ball:Ball!
+    var blockGrid:Grid!
     
     var deltaPoint = CGPointZero
     var previousTouchLocation = CGPointZero
@@ -28,12 +29,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var livesLabel = SKLabelNode(fontNamed: "Marker Felt Thin")
     
     var flashAction:SKAction!
-    let explodeEmitter:SKEmitterNode = SKEmitterNode(fileNamed: "enemyDeath.sks")
     
     var pause = true
     var score = 0
     var lives = 5
-    var blocksLeft = 0
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -108,43 +107,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupEntities(){
         paddle = Paddle(position: CGPoint(x: size.width/2, y: 100))
-        blockLayerNode.addChild(paddle)
         ball = Ball(position: paddle.position)
+        blockGrid = Grid(playableRect: playableRect)
+        
+        blockLayerNode.addChild(paddle)
         blockLayerNode.addChild(ball)
+        blockLayerNode.addChild(blockGrid)
         
-        setupBlocks()
-    }
-    
-    func setupBlocks(){
-        let blockSize = CGFloat(36)
-        let spaceSize = CGFloat(4)
-        var point:CGPoint
-        var yoffset:CGFloat
-        
-        for j in 1...10{
-            if j == 1{
-                yoffset = blockSize
-            }
-            else{
-                yoffset = blockSize * CGFloat(j)+spaceSize*CGFloat(j-1)
-            }
-            for i in 1...10{
-                blocksLeft++
-                if i == 1 {
-                    point = CGPoint(
-                        x: playableRect.minX+blockSize,
-                        y: playableRect.maxY-yoffset)
-                }
-                else{
-                    point = CGPoint(
-                        x: playableRect.minX+blockSize*CGFloat(i)+spaceSize*(CGFloat(i-1)),
-                        y: playableRect.maxY-yoffset)
-                }
-                let block = Block(position: point)
-                
-                blockLayerNode.addChild(block)
-            }
-        }
     }
     // ********************** End of Setup Functions
     
@@ -164,17 +133,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     // ********************** Start of Reset Functions
-    func removeRemainingBlocks(){
-        enumerateChildNodesWithName("block"){ node, _ in
-            let block = node as! SKSpriteNode
-            block.removeFromParent()
-        }
-        blocksLeft = 0
-    }
-    
     func resetGame(node:SKNode){
-        removeRemainingBlocks()
-        setupBlocks()
+        blockGrid.resetBlocks()
         removeGameOver(node)
         score = 0
         lives = 5
@@ -242,8 +202,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // ********************** Start of Movement Mechanics Functions
     func shootBall(pointB: CGPoint){
         let pointA = paddle.position + CGPoint(x: 0, y: paddle.frame.height/2)
-        let unitVector = (pointB - pointA)
-        let moveVector = CGVector(dx: unitVector.x, dy: unitVector.y)
+        let vectorPoint = (pointB - pointA)
+        let moveVector = CGVector(dx: vectorPoint.x, dy: vectorPoint.y)
         
         ball.physicsBody?.applyForce(moveVector)
         
@@ -252,13 +212,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func hitBlock(block:SKNode){
-        blocksLeft--
-        explodeEmitter.position = block.position
-        if explodeEmitter.parent == nil {
-            blockLayerNode.addChild(explodeEmitter)
-        }
-        explodeEmitter.resetSimulation()
-        block.removeFromParent()
+        blockGrid.hitBlock(block)
         score += 10
         scoreLabel.text = "Score: \(score)"
         scoreLabel.runAction(flashAction)
@@ -269,16 +223,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // ********************** Start of Touch Functions
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         for touch:AnyObject in touches {
-            let location1 = touch.locationInNode(controllerLayerNode)
-            let location2 = touch.locationInNode(blockLayerNode)
-            let node1 = self.nodeAtPoint(location1)
-            let node2 = self.nodeAtPoint(location2)
-            if (pause && node1.name == "boxSprite") {
-                removeShootBox(node1)
-                shootBall(location2)
+            let location = touch.locationInNode(controllerLayerNode)
+            let node = self.nodeAtPoint(location)
+            if (pause && node.name == "boxSprite") {
+                removeShootBox(node)
+                shootBall(location)
             }
-            else if (pause && node1.name == "gameOverSprite") {
-                resetGame(node1)
+            else if (pause && node.name == "gameOverSprite") {
+                resetGame(node)
             }
         }
     }
@@ -334,7 +286,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func checkWin(){
-        if blocksLeft == 0 {
+        if blockGrid.blocksLeft == 0 {
             pause = true
             ball.hidden = true
             ball.physicsBody?.resting = true
@@ -356,5 +308,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             checkWin()
         }
     }
-    // ********************** Start of Update Loop Functions
+    // ********************** End of Update Loop Functions
 }
