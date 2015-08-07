@@ -39,7 +39,15 @@ class Grid: SKNode {
     }
     
     func setup(){
-        blocksLeft = 100
+        let numLocked = blockTypes - 3
+        var lockedPositions = [Int]()
+        
+        for n in 0...numLocked{
+            let randomNum = arc4random_uniform(100) + 1
+            lockedPositions.append(Int(randomNum))
+        }
+        
+        blocksLeft = 100 - Int(numLocked)
         
         let blockSize = CGFloat(72)
         let spaceSize = CGFloat(8)
@@ -54,6 +62,14 @@ class Grid: SKNode {
                 yoffset = blockSize * CGFloat(j)+spaceSize*CGFloat(j-1)
             }
             for i in 1...10{
+                let space = i * j
+                var locked = false
+                if find(lockedPositions, space) != nil{
+                    locked = true
+                }
+                else{
+                    locked = false
+                }
                 if i == 1 {
                     point = CGPoint(
                         x: playableRect.minX+blockSize,
@@ -64,7 +80,7 @@ class Grid: SKNode {
                         x: playableRect.minX+blockSize*CGFloat(i)+spaceSize*(CGFloat(i-1)),
                         y: playableRect.maxY-yoffset)
                 }
-                let block = Block(position: point, blockTypes: self.blockTypes)
+                let block = Block(position: point, blockTypes: self.blockTypes, locked: locked)
                 
                 addChild(block)
             }

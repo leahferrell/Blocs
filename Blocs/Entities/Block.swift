@@ -15,14 +15,25 @@ class Block: SKSpriteNode {
         super.init(coder: aDecoder)
     }
     
-    init(position: CGPoint, blockTypes: UInt32){
+    init(position: CGPoint, blockTypes: UInt32, locked: Bool){
         let randomNum = arc4random_uniform(blockTypes) + 1
-        let texture = SKTexture(imageNamed: "Block\(randomNum)")
+        let texture: SKTexture
+        let name: String
+        let physicsBody: SKPhysicsBody
+        if !locked{
+            texture = SKTexture(imageNamed: "Block\(randomNum)")
+            name = "block"
+            physicsBody = SKPhysicsBody(rectangleOfSize: texture.size())
+        }
+        else{
+            texture = SKTexture(imageNamed: "lockedblock")
+            name = "locked"
+            physicsBody = SKPhysicsBody(circleOfRadius: texture.size().width/2)
+        }
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
         self.position = position
-        
-        self.name = "block"
-        self.physicsBody = SKPhysicsBody(rectangleOfSize: self.frame.size)
+        self.name = name
+        self.physicsBody = physicsBody
         self.physicsBody?.dynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.Block
         self.physicsBody?.collisionBitMask = PhysicsCategory.Ball
