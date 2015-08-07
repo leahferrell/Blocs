@@ -12,15 +12,30 @@ class Grid: SKNode {
     var blocksLeft = 100
     let playableRect: CGRect!
     let explodeEmitter:SKEmitterNode = SKEmitterNode(fileNamed: "enemyDeath.sks")
+    var blockTypes:UInt32 = 3
     
     required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(playableRect: CGRect){
+    init(playableRect: CGRect, level: Int){
         self.playableRect = playableRect
         super.init()
+        determineBlockTypes(level)
         setup()
+    }
+    
+    func determineBlockTypes(level: Int){
+        switch level {
+        case 1...4:
+            self.blockTypes = 3
+        case 5...9:
+            self.blockTypes = 4
+        case 10...14:
+            self.blockTypes = 5
+        default:
+            self.blockTypes = 6
+        }
     }
     
     func setup(){
@@ -49,7 +64,7 @@ class Grid: SKNode {
                         x: playableRect.minX+blockSize*CGFloat(i)+spaceSize*(CGFloat(i-1)),
                         y: playableRect.maxY-yoffset)
                 }
-                let block = Block(position: point, blockTypes: 3)
+                let block = Block(position: point, blockTypes: self.blockTypes)
                 
                 addChild(block)
             }

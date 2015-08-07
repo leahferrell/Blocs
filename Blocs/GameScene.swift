@@ -107,7 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupEntities(){
         paddle = Paddle(position: CGPoint(x: size.width/2, y: 200))
         ball = Ball(position: paddle.position)
-        blockGrid = Grid(playableRect: playableRect)
+        blockGrid = Grid(playableRect: playableRect, level: self.level)
         
         blockLayerNode.addChild(paddle)
         blockLayerNode.addChild(ball)
@@ -165,7 +165,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // ********************** Start of Movement Mechanics Functions
     func shootBall(pointB: CGPoint){
         let pointA = paddle.position + CGPoint(x: 0, y: paddle.frame.height/2)
-        let vectorPoint = (pointB - pointA) * 2
+        let addition:CGFloat = (2.0 * (1.0 + CGFloat(level)/10.0))
+        let vectorPoint = (pointB - pointA) * addition
         let moveVector = CGVector(dx: vectorPoint.x, dy: vectorPoint.y)
         
         ball.physicsBody?.applyForce(moveVector)
