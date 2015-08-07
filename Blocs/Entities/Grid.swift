@@ -49,7 +49,7 @@ class Grid: SKNode {
                         x: playableRect.minX+blockSize*CGFloat(i)+spaceSize*(CGFloat(i-1)),
                         y: playableRect.maxY-yoffset)
                 }
-                let block = Block(position: point)
+                let block = Block(position: point, blockTypes: 3)
                 
                 addChild(block)
             }

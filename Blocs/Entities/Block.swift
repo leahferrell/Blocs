@@ -15,8 +15,8 @@ class Block: SKSpriteNode {
         super.init(coder: aDecoder)
     }
     
-    init(position: CGPoint){
-        let randomNum = arc4random_uniform(3) + 1
+    init(position: CGPoint, blockTypes: UInt32){
+        let randomNum = arc4random_uniform(blockTypes) + 1
         let texture = SKTexture(imageNamed: "Block\(randomNum)")
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
         self.position = position
