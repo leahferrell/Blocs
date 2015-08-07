@@ -26,6 +26,7 @@ class Ball: SKSpriteNode {
         self.physicsBody?.restitution = 1.0
         self.physicsBody?.categoryBitMask = PhysicsCategory.Ball
         self.physicsBody?.collisionBitMask = PhysicsCategory.Paddle | PhysicsCategory.Block
+        self.physicsBody?.fieldBitMask = PhysicsCategory.Field
         self.physicsBody!.contactTestBitMask = PhysicsCategory.Block
         self.physicsBody?.friction = 0.0
         self.physicsBody?.linearDamping = 0.0

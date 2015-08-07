@@ -13,4 +13,5 @@ struct PhysicsCategory {
     static let Ball:   UInt32 = 0b1   // 1
     static let Block: UInt32 = 0b10  // 2
     static let Paddle:   UInt32 = 0b100 // 4
+    static let Field: UInt32 = 0b1000 //8
 }

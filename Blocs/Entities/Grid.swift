@@ -63,13 +63,7 @@ class Grid: SKNode {
             }
             for i in 1...10{
                 let space = i * j
-                var locked = false
-                if find(lockedPositions, space) != nil{
-                    locked = true
-                }
-                else{
-                    locked = false
-                }
+                
                 if i == 1 {
                     point = CGPoint(
                         x: playableRect.minX+blockSize,
@@ -80,8 +74,14 @@ class Grid: SKNode {
                         x: playableRect.minX+blockSize*CGFloat(i)+spaceSize*(CGFloat(i-1)),
                         y: playableRect.maxY-yoffset)
                 }
-                let block = Block(position: point, blockTypes: self.blockTypes, locked: locked)
                 
+                let block:Block
+                if find(lockedPositions, space) != nil{
+                    block = Block.lockedBlock(point)
+                }
+                else{
+                    block = Block.randomColorBlock(point, blockTypes: blockTypes)
+                }
                 addChild(block)
             }
         }
