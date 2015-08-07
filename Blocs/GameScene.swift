@@ -136,6 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func resetGame(node:SKNode){
         blockGrid.resetBlocks()
         removeGameOver(node)
+        ball.position = paddle.position
         score = 0
         lives = 5
         scoreLabel.text = "Score: \(score)"
