@@ -92,7 +92,7 @@
 		082C6D4C1B307907002D7F57 /* IMG_0407.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0407.PNG; sourceTree = "<group>"; };
 		082C6D4D1B307907002D7F57 /* IMG_0408.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0408.PNG; sourceTree = "<group>"; };
 		082C6D501B307EAD002D7F57 /* fullscreenshots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fullscreenshots.png; sourceTree = "<group>"; };
-		089123A61B7A77BB00F5277B /* StringUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtility.swift; sourceTree = "<group>"; };
+		089123A61B7A77BB00F5277B /* StringUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringUtility.swift; path = ../StringUtility.swift; sourceTree = "<group>"; };
 		089123AA1B7A7B7800F5277B /* level1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level1; sourceTree = "<group>"; };
 		089123AC1B7A7B9300F5277B /* BlockMapLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockMapLoader.swift; sourceTree = "<group>"; };
 		089123B11B7A804C00F5277B /* level2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level2; sourceTree = "<group>"; };
@@ -104,11 +104,11 @@
 		089123B71B7A804C00F5277B /* level8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level8; sourceTree = "<group>"; };
 		089123B81B7A804C00F5277B /* level9 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level9; sourceTree = "<group>"; };
 		089123B91B7A804C00F5277B /* level10 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level10; sourceTree = "<group>"; };
-		08B2471C1B73F90600EE918D /* PhysicsCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
+		08B2471C1B73F90600EE918D /* PhysicsCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhysicsCategory.swift; path = ../PhysicsCategory.swift; sourceTree = "<group>"; };
 		08B2471E1B74E50900EE918D /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
-		08B247201B74F8FF00EE918D /* LostLevelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LostLevelScene.swift; sourceTree = "<group>"; };
-		08B247221B75046200EE918D /* WonLevelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WonLevelScene.swift; sourceTree = "<group>"; };
-		08B247241B75065F00EE918D /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
+		08B247201B74F8FF00EE918D /* LostLevelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LostLevelScene.swift; path = ../LostLevelScene.swift; sourceTree = "<group>"; };
+		08B247221B75046200EE918D /* WonLevelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WonLevelScene.swift; path = ../WonLevelScene.swift; sourceTree = "<group>"; };
+		08B247241B75065F00EE918D /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuScene.swift; path = ../MainMenuScene.swift; sourceTree = "<group>"; };
 		08B247261B750DD700EE918D /* Block1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Block1.png; sourceTree = "<group>"; };
 		08B247271B750DD700EE918D /* Block2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Block2.png; sourceTree = "<group>"; };
 		08B247281B750DD700EE918D /* Block3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Block3.png; sourceTree = "<group>"; };
@@ -121,7 +121,7 @@
 		08D9C14A1B306B7800C26C91 /* Blocs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blocs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08D9C14E1B306B7800C26C91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08D9C14F1B306B7800C26C91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		08D9C1531B306B7800C26C91 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		08D9C1531B306B7800C26C91 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = ../GameScene.swift; sourceTree = "<group>"; };
 		08D9C1551B306B7800C26C91 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		08D9C1581B306B7800C26C91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		08D9C15A1B306B7800C26C91 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -164,7 +164,6 @@
 		082C6D241B30760F002D7F57 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				089123C41B7AA55A00F5277B /* DisplayItems */,
 				089123C31B7AA54800F5277B /* Sprites */,
 			);
 			path = Entities;
@@ -244,6 +243,29 @@
 				082C6D271B30760F002D7F57 /* Box.swift */,
 			);
 			name = DisplayItems;
+			path = ../Entities;
+			sourceTree = "<group>";
+		};
+		089123C51B7AAB9300F5277B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				08D9C18F1B30700A00C26C91 /* SKTUtils */,
+				089123A61B7A77BB00F5277B /* StringUtility.swift */,
+				08B2471C1B73F90600EE918D /* PhysicsCategory.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		089123C71B7AAB9300F5277B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				089123C41B7AA55A00F5277B /* DisplayItems */,
+				08D9C1531B306B7800C26C91 /* GameScene.swift */,
+				08B247241B75065F00EE918D /* MainMenuScene.swift */,
+				08B247201B74F8FF00EE918D /* LostLevelScene.swift */,
+				08B247221B75046200EE918D /* WonLevelScene.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		08D9C1411B306B7800C26C91 = {
@@ -273,15 +295,10 @@
 				082C6D461B307634002D7F57 /* Particles */,
 				082C6D2D1B30762A002D7F57 /* Images */,
 				082C6D241B30760F002D7F57 /* Entities */,
-				08D9C18F1B30700A00C26C91 /* SKTUtils */,
-				08D9C14F1B306B7800C26C91 /* AppDelegate.swift */,
-				089123A61B7A77BB00F5277B /* StringUtility.swift */,
-				08D9C1531B306B7800C26C91 /* GameScene.swift */,
-				08B247241B75065F00EE918D /* MainMenuScene.swift */,
-				08B247201B74F8FF00EE918D /* LostLevelScene.swift */,
-				08B247221B75046200EE918D /* WonLevelScene.swift */,
-				08B2471C1B73F90600EE918D /* PhysicsCategory.swift */,
+				089123C51B7AAB9300F5277B /* Utilities */,
+				089123C71B7AAB9300F5277B /* Views */,
 				08D9C1551B306B7800C26C91 /* GameViewController.swift */,
+				08D9C14F1B306B7800C26C91 /* AppDelegate.swift */,
 				08D9C1571B306B7800C26C91 /* Main.storyboard */,
 				08D9C15A1B306B7800C26C91 /* Images.xcassets */,
 				08D9C15C1B306B7800C26C91 /* LaunchScreen.xib */,
@@ -331,7 +348,8 @@
 				08D9C19A1B30700A00C26C91 /* SKTTimingFunctions.swift */,
 				08D9C19B1B30700A00C26C91 /* Vector3.swift */,
 			);
-			path = SKTUtils;
+			name = SKTUtils;
+			path = ../SKTUtils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
