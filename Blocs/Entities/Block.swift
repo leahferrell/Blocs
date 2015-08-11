@@ -10,9 +10,10 @@ import SpriteKit
 
 class Block: SKSpriteNode {
     let explodeEmitter:SKEmitterNode = SKEmitterNode(fileNamed: "enemyDeath.sks")
+    //var item: Item?
     
     required init?(coder aDecoder: NSCoder){
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     init(position: CGPoint, texture: SKTexture, physicsBody: SKPhysicsBody, name: String){
@@ -60,9 +61,8 @@ class Block: SKSpriteNode {
         let name = "locked"
         let block = Block(position: position, texture: texture, physicsBody: physicsBody, name: name)
         
-        let field = SKFieldNode.springField()
-        field.strength = -0.25
-        field.falloff = -1.0
+        let field = SKFieldNode.radialGravityField()
+        field.strength = 6
         field.enabled = true
         field.categoryBitMask = PhysicsCategory.Field
         block.addChild(field)
@@ -72,10 +72,14 @@ class Block: SKSpriteNode {
     
     class func itemBlock(position: CGPoint) -> Block {
         let randomNum = arc4random_uniform(3) + 1
-        let texture = SKTexture(imageNamed: "Item\(randomNum)")
+        let texture = SKTexture(imageNamed: "item")
         let physicsBody = SKPhysicsBody(rectangleOfSize: texture.size())
         let name = "item"
-        return Block(position: position, texture: texture, physicsBody: physicsBody, name: name)
+        
+        let block = Block(position: position, texture: texture, physicsBody: physicsBody, name: name)
+        block.physicsBody?.categoryBitMask = PhysicsCategory.None
+        
+        return block
     }
     
     func explode(){

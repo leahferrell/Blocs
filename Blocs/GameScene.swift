@@ -109,6 +109,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball = Ball(position: paddle.position)
         blockGrid = Grid(playableRect: playableRect, level: self.level)
         
+        //ball.superBall()
+        
         blockLayerNode.addChild(paddle)
         blockLayerNode.addChild(ball)
         blockLayerNode.addChild(blockGrid)
@@ -219,6 +221,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             hitBlock(contact.bodyA.node!)
         }
         else if contact.bodyB.node?.name == "block" {
+            hitBlock(contact.bodyB.node!)
+        }
+        else if contact.bodyA.node?.name == "item" {
+            ball.superBall()
+            hitBlock(contact.bodyA.node!)
+        }
+        else if contact.bodyB.node?.name == "item" {
+            ball.superBall()
             hitBlock(contact.bodyB.node!)
         }
     }

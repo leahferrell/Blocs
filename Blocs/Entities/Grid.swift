@@ -26,7 +26,7 @@ class Grid: SKNode {
     }
     
     func determineBlockTypes(level: Int){
-        switch level {
+        /*switch level {
         case 1...4:
             self.blockTypes = 3
         case 5...9:
@@ -35,19 +35,18 @@ class Grid: SKNode {
             self.blockTypes = 5
         default:
             self.blockTypes = 6
-        }
+        }*/
+        self.blockTypes = 4
     }
     
     func setup(){
-        let numLocked = blockTypes - 3
+        let numLocked = 2
         var lockedPositions = [Int]()
         
         for n in 0...numLocked{
             let randomNum = arc4random_uniform(100) + 1
             lockedPositions.append(Int(randomNum))
         }
-        
-        blocksLeft = 100 - Int(numLocked)
         
         let blockSize = CGFloat(72)
         let spaceSize = CGFloat(8)
@@ -76,8 +75,10 @@ class Grid: SKNode {
                 }
                 
                 let block:Block
+                //block = Block.randomColorBlock(point, blockTypes: blockTypes)
+                
                 if find(lockedPositions, space) != nil{
-                    block = Block.lockedBlock(point)
+                    block = Block.itemBlock(point)
                 }
                 else{
                     block = Block.randomColorBlock(point, blockTypes: blockTypes)
