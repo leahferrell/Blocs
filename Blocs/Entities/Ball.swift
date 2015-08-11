@@ -48,8 +48,9 @@ class Ball: SKSpriteNode {
     }
     
     func superBall(){
-        removeAllActions()
-        runAction(superSequence)
+        if actionForKey("superball") == nil {
+            runAction(superSequence, withKey: "superball")
+        }
     }
     
     func startSuperBall(){

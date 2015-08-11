@@ -164,11 +164,8 @@
 		082C6D241B30760F002D7F57 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				082C6D251B30760F002D7F57 /* Ball.swift */,
-				08B2471E1B74E50900EE918D /* Grid.swift */,
-				082C6D261B30760F002D7F57 /* Block.swift */,
-				082C6D271B30760F002D7F57 /* Box.swift */,
-				082C6D281B30760F002D7F57 /* Paddle.swift */,
+				089123C41B7AA55A00F5277B /* DisplayItems */,
+				089123C31B7AA54800F5277B /* Sprites */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -228,6 +225,25 @@
 				089123AC1B7A7B9300F5277B /* BlockMapLoader.swift */,
 			);
 			path = Levels;
+			sourceTree = "<group>";
+		};
+		089123C31B7AA54800F5277B /* Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				082C6D251B30760F002D7F57 /* Ball.swift */,
+				08B2471E1B74E50900EE918D /* Grid.swift */,
+				082C6D261B30760F002D7F57 /* Block.swift */,
+				082C6D281B30760F002D7F57 /* Paddle.swift */,
+			);
+			name = Sprites;
+			sourceTree = "<group>";
+		};
+		089123C41B7AA55A00F5277B /* DisplayItems */ = {
+			isa = PBXGroup;
+			children = (
+				082C6D271B30760F002D7F57 /* Box.swift */,
+			);
+			name = DisplayItems;
 			sourceTree = "<group>";
 		};
 		08D9C1411B306B7800C26C91 = {
