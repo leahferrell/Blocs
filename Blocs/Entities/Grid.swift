@@ -13,6 +13,7 @@ class Grid: SKNode {
     let playableRect: CGRect!
     let explodeEmitter:SKEmitterNode = SKEmitterNode(fileNamed: "enemyDeath.sks")
     var blockTypes:UInt32 = 3
+    var level = 1
     
     required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -21,32 +22,20 @@ class Grid: SKNode {
     init(playableRect: CGRect, level: Int){
         self.playableRect = playableRect
         super.init()
-        determineBlockTypes(level)
-        setup()
+        
+        if level < 10 {
+            self.level = level
+        }
+        
+        generateGrid()
     }
     
     func determineBlockTypes(level: Int){
-        /*switch level {
-        case 1...4:
-            self.blockTypes = 3
-        case 5...9:
-            self.blockTypes = 4
-        case 10...14:
-            self.blockTypes = 5
-        default:
-            self.blockTypes = 6
-        }*/
         self.blockTypes = 4
     }
     
-    func setup(){
-        let numLocked = 2
-        var lockedPositions = [Int]()
-        
-        for n in 0...numLocked{
-            let randomNum = arc4random_uniform(100) + 1
-            lockedPositions.append(Int(randomNum))
-        }
+    func generateGrid(){
+        let blockCodes = blockCodesFromFileNamed("level\(level)")!
         
         let blockSize = CGFloat(72)
         let spaceSize = CGFloat(8)
@@ -74,30 +63,44 @@ class Grid: SKNode {
                         y: playableRect.maxY-yoffset)
                 }
                 
-                let block:Block
-                //block = Block.randomColorBlock(point, blockTypes: blockTypes)
+                let code:Character = blockCodes[j-1][i-1]
                 
-                if find(lockedPositions, space) != nil{
-                    block = Block.itemBlock(point)
-                }
-                else{
-                    block = Block.randomColorBlock(point, blockTypes: blockTypes)
-                }
-                addChild(block)
+                var block = blockForCode(code, pos: point)
+                
+                addChild(block!)
             }
         }
+        
     }
     
-    func removeRemainingBlocks(){
-        enumerateChildNodesWithName("block"){ node, _ in
-            let block = node as! SKSpriteNode
-            block.removeFromParent()
+    func blockForCode(code: Character, pos: CGPoint) -> Block? {
+        var block: Block?
+        switch code {
+        case "1":
+            block = Block.colorBlock(pos, color: 1)
+        case "2":
+            block = Block.colorBlock(pos, color: 2)
+        case "3":
+            block = Block.colorBlock(pos, color: 3)
+        case "4":
+            block = Block.colorBlock(pos, color: 4)
+        case "5":
+            block = Block.colorBlock(pos, color: 5)
+        case "6":
+            block = Block.colorBlock(pos, color: 6)
+        case "i":
+            block = Block.itemBlock(pos)
+        case "l":
+            blocksLeft--
+            block = Block.lockedBlock(pos)
+        case "f":
+            blocksLeft--
+            block = Block.fieldLockedBlock(pos)
+        default:
+            block = Block.randomColorBlock(pos, blockTypes: 3)
         }
-    }
-    
-    func resetBlocks(){
-        removeRemainingBlocks()
-        setup()
+        
+        return block
     }
     
     func hitBlock(block:SKNode){
