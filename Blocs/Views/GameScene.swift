@@ -30,20 +30,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var flashAction:SKAction!
     
     var pause = true
-    var score = 0
-    var lives = 5
-    let level:Int
+    var data: GameData
+    //var score = 0
+    //var lives = 5
+    //let level:Int
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(size: CGSize, level: Int){
+    init(size: CGSize, data: GameData){
         let maxAspectRatio: CGFloat = 16.0/9.0
         let maxAspectRatioWidth = size.height / maxAspectRatio
         let playableMargin = (size.width - maxAspectRatioWidth) / 2.0 + 140
         playableRect = CGRect(x: playableMargin, y: 128, width: maxAspectRatioWidth-280, height: size.height-460)
-        self.level = level
+        self.data = data
         
         super.init(size: size)
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
@@ -76,7 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //HUD
         scoreLabel.fontSize = 100
-        scoreLabel.text = "Score: \(score)"
+        scoreLabel.text = "Score: \(data.score)"
         scoreLabel.name = "scoreLabel"
         scoreLabel.fontColor = SKColor.blackColor()
         scoreLabel.verticalAlignmentMode = .Center
@@ -90,7 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             SKAction.scaleTo(1.0, duration: 0.2)])
         
         livesLabel.fontSize = 100
-        livesLabel.text = "Lives: \(lives)"
+        livesLabel.text = "Lives: \(data.lives)"
         livesLabel.name = "livesLabel"
         livesLabel.fontColor = SKColor.blackColor()
         livesLabel.verticalAlignmentMode = .Center
@@ -107,7 +108,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupEntities(){
         paddle = Paddle(position: CGPoint(x: size.width/2, y: 200))
         ball = Ball(position: paddle.position)
-        blockGrid = Grid(playableRect: playableRect, level: self.level)
+        blockGrid = Grid(playableRect: playableRect, level: data.level)
         
         //ball.superBall()
         
@@ -167,7 +168,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // ********************** Start of Movement Mechanics Functions
     func shootBall(pointB: CGPoint){
         let pointA = paddle.position + CGPoint(x: 0, y: paddle.frame.height/2)
-        let addition:CGFloat = (2.0 * (1.0 + CGFloat(level)/10.0))
+        let addition:CGFloat = (2.0 * (1.0 + CGFloat(data.level)/10.0))
         let vectorPoint = (pointB - pointA) * addition
         let moveVector = CGVector(dx: vectorPoint.x, dy: vectorPoint.y)
         
@@ -179,8 +180,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func hitBlock(block:SKNode){
         blockGrid.hitBlock(block)
-        score += 10
-        scoreLabel.text = "Score: \(score)"
+        data.score += 10
+        scoreLabel.text = "Score: \(data.score)"
         scoreLabel.runAction(flashAction)
     }
     // ********************** End of Movement Mechanics Functions
@@ -193,6 +194,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let node = self.nodeAtPoint(location)
             if (pause && node.name == "boxSprite") {
                 removeShootBox(node)
+                shootBall(location)
+            }
+            else if (pause && node.parent?.name == "boxSprite"){
+                let parentNode = node.parent!
+                removeShootBox(parentNode)
                 shootBall(location)
             }
         }
@@ -245,9 +251,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ball.hidden = true
             ball.physicsBody?.resting = true
             pause = true
-            lives--
-            livesLabel.text = "Lives: \(lives)"
-            if lives > 0 {
+            data.lives--
+            livesLabel.text = "Lives: \(data.lives)"
+            if data.lives > 0 {
                 displayShootBox()
             }
             else{
@@ -267,7 +273,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.hidden = true
         ball.physicsBody?.resting = true
         
-        let levelEndScene = WonLevelScene(size: size, level: self.level)
+        let levelEndScene = WonLevelScene(size: size, data: data)
         levelEndScene.scaleMode = scaleMode
         
         let reveal = SKTransition.crossFadeWithDuration(0.5)
@@ -275,7 +281,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func lostLevel(){
-        let levelEndScene = LostLevelScene(size: size, level: self.level)
+        data.resetLevel()
+        let levelEndScene = LevelTransitionScene(size: size, data: data)
         levelEndScene.scaleMode = scaleMode
         
         let reveal = SKTransition.crossFadeWithDuration(0.5)

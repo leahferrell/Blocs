@@ -1,19 +1,19 @@
 //
-//  LostLevelScene.swift
+//  LevelTransitionScene.swift
 //  Blocs
 //
-//  Created by Leah Ferrell on 8/7/15.
+//  Created by Leah Ferrell on 8/12/15.
 //  Copyright (c) 2015 Leah Ferrell. All rights reserved.
 //
 
 import Foundation
 import SpriteKit
 
-class LostLevelScene: SKScene {
-    var level:Int
+class LevelTransitionScene: SKScene {
+    var data: GameData
     
-    init(size: CGSize, level: Int) {
-        self.level = level
+    init(size: CGSize, data: GameData) {
+        self.data = data
         super.init(size: size)
     }
     
@@ -27,7 +27,7 @@ class LostLevelScene: SKScene {
         self.addChild(background)
         
         let levelLabel = SKLabelNode(fontNamed: "Marker Felt Thin")
-        levelLabel.text = "Level \(level)"
+        levelLabel.text = "Level \(data.level)"
         levelLabel.fontSize = 100
         levelLabel.fontColor = UIColor.whiteColor()
         levelLabel.verticalAlignmentMode = .Center
@@ -49,7 +49,7 @@ class LostLevelScene: SKScene {
     
     func transitionToLevel(){
         let block = SKAction.runBlock {
-            let myScene = GameScene(size: self.size, level: self.level)
+            let myScene = GameScene(size: self.size, data: self.data)
             myScene.scaleMode = self.scaleMode
             let reveal = SKTransition.crossFadeWithDuration(0.5)
             self.view?.presentScene(myScene, transition: reveal)

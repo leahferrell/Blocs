@@ -10,10 +10,10 @@ import Foundation
 import SpriteKit
 
 class WonLevelScene: SKScene {
-    var level:Int
+    var data: GameData
     
-    init(size: CGSize, level: Int) {
-        self.level = level
+    init(size: CGSize, data: GameData) {
+        self.data = data
         super.init(size: size)
     }
     
@@ -22,39 +22,10 @@ class WonLevelScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
-        let background = SKSpriteNode(imageNamed:"background3")
-        background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-        self.addChild(background)
-        level++
-        
-        let levelLabel = SKLabelNode(fontNamed: "Marker Felt Thin")
-        levelLabel.text = "Level \(level)"
-        levelLabel.fontSize = 100
-        levelLabel.fontColor = UIColor.whiteColor()
-        levelLabel.verticalAlignmentMode = .Center
-        levelLabel.zPosition = 100
-        levelLabel.position = CGPoint(x:self.size.width/2, y:self.size.height/2-400)
-        
-        let action = SKAction.sequence([
-            SKAction.scaleTo(1.25, duration: 0.2),
-            SKAction.scaleTo(1.0, duration: 0.2)])
-        
-        levelLabel.runAction(SKAction.repeatActionForever(action))
-        
-        self.addChild(levelLabel)
+        data.level++
+        let myScene = GameScene(size: self.size, data: self.data)
+        myScene.scaleMode = self.scaleMode
+        self.view?.presentScene(myScene)
     }
-    
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        transitionToLevel()
-    }
-    
-    func transitionToLevel(){
-        let block = SKAction.runBlock {
-            let myScene = GameScene(size: self.size, level: self.level)
-            myScene.scaleMode = self.scaleMode
-            let reveal = SKTransition.crossFadeWithDuration(0.5)
-            self.view?.presentScene(myScene, transition: reveal)
-        }
-        self.runAction(block)
-    }
+
 }
