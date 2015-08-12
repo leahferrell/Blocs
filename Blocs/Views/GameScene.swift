@@ -28,12 +28,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var livesLabel = SKLabelNode(fontNamed: "Marker Felt Thin")
     
     var flashAction:SKAction!
+    var buttonAction:SKAction!
     
     var pause = true
     var data: GameData
-    //var score = 0
-    //var lives = 5
-    //let level:Int
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -76,6 +74,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         backgroundLayerNode.addChild(background)
         
         //HUD
+        
+        let point = CGPoint(x: size.width/2, y: frame.maxY-100)
+        let menuButton = TinyButton(position: point, text: "Menu")
+        
+        controllerLayerNode.addChild(menuButton)
+        
         scoreLabel.fontSize = 100
         scoreLabel.text = "Score: \(data.score)"
         scoreLabel.name = "scoreLabel"
@@ -83,12 +87,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.verticalAlignmentMode = .Center
         scoreLabel.position = CGPoint(
             x: size.width / 3,
-            y: size.height - (scoreLabel.frame.size.height*2) + 3)
+            y: size.height - (scoreLabel.frame.size.height*3) + 3)
         scoreLayerNode.addChild(scoreLabel)
         
         flashAction = SKAction.sequence([
             SKAction.scaleTo(1.25, duration: 0.2),
             SKAction.scaleTo(1.0, duration: 0.2)])
+        
+        buttonAction = SKAction.group([
+            SKAction.sequence([
+                SKAction.scaleTo(1.05, duration: 0.2),
+                SKAction.scaleTo(1.0, duration: 0.2)
+                ]),
+            SKAction.colorizeWithColor(UIColor.whiteColor(), colorBlendFactor: 0.5, duration: 0.4)
+            ])
         
         livesLabel.fontSize = 100
         livesLabel.text = "Lives: \(data.lives)"
@@ -97,7 +109,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         livesLabel.verticalAlignmentMode = .Center
         livesLabel.position = CGPoint(
             x: 2 * size.width / 3,
-            y: size.height - (scoreLabel.frame.size.height*2) + 3)
+            y: size.height - (scoreLabel.frame.size.height*3) + 3)
         scoreLayerNode.addChild(livesLabel)
         
         //Control Box Thing
@@ -201,6 +213,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 removeShootBox(parentNode)
                 shootBall(location)
             }
+            else if node.name == "Menu" {
+                node.runAction(buttonAction){
+                    self.toMainMenu()
+                }
+            }
+            else if node.parent?.name == "Menu" {
+                let parentNode = node.parent!
+                parentNode.runAction(buttonAction){
+                    self.toMainMenu()
+                }
+            }
         }
     }
     
@@ -217,6 +240,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesCancelled(touches: Set<NSObject>, withEvent event: UIEvent) {
         deltaPoint = CGPointZero
+    }
+    
+    func toMainMenu(){
+        let myScene = MainMenuScene(size:self.size)
+        myScene.scaleMode = self.scaleMode
+        let reveal = SKTransition.revealWithDirection(SKTransitionDirection.Right, duration: 0.5)
+        self.view?.presentScene(myScene, transition: reveal)
     }
     // ********************** End of Touch Functions
     

@@ -14,6 +14,7 @@ class ChooseLevelScene: SKScene {
     var buttonLayer = SKNode()
     let buttonAction:SKAction
     var sceneAction:SKAction!
+    let mainMenuText = "<- Main Menu"
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -51,6 +52,13 @@ class ChooseLevelScene: SKScene {
         let playableRect = CGRect(x: playableMargin, y: 190, width: maxAspectRatioWidth-200, height: size.height-400)
         
         generateGrid(playableRect)
+        
+        let point = CGPoint(x: size.width/2, y: playableRect.minY+200)
+    
+        let mainMenuButton = BarButton(position: point, text: mainMenuText)
+        
+        buttonLayer.addChild(mainMenuButton)
+        
     }
     
     func debugDrawPlayableArea(playableRect: CGRect){
@@ -91,7 +99,14 @@ class ChooseLevelScene: SKScene {
     func sceneTapped() {
         let myScene = LevelTransitionScene(size:self.size, data: data)
         myScene.scaleMode = self.scaleMode
-        let reveal = SKTransition.crossFadeWithDuration(0.5)
+        let reveal = SKTransition.revealWithDirection(SKTransitionDirection.Left, duration: 0.5)
+        self.view?.presentScene(myScene, transition: reveal)
+    }
+    
+    func toMainMenu(){
+        let myScene = MainMenuScene(size:self.size)
+        myScene.scaleMode = self.scaleMode
+        let reveal = SKTransition.revealWithDirection(SKTransitionDirection.Right, duration: 0.5)
         self.view?.presentScene(myScene, transition: reveal)
     }
     
@@ -100,19 +115,27 @@ class ChooseLevelScene: SKScene {
             let location = touch.locationInNode(buttonLayer)
             let node = buttonLayer.nodeAtPoint(location)
             if node.name == "levelbutton" {
-                node.runAction(buttonAction)
                 var dictionary = node.userData!
                 let level:Int = Int(dictionary["level"] as! NSNumber)
                 data.level = level
-                runAction(sceneAction)
+                node.runAction(buttonAction){
+                    self.sceneTapped()
+                }
             }
             else if node.parent?.name == "levelbutton" {
                 let parentNode = node.parent!
-                parentNode.runAction(buttonAction)
                 var dictionary = parentNode.userData!
                 let level:Int = Int(dictionary["level"] as! NSNumber)
                 data.level = level
-                runAction(sceneAction)
+                parentNode.runAction(buttonAction){
+                    self.sceneTapped()
+                }
+            }
+            else if node.name == mainMenuText || node.parent?.name == mainMenuText {
+                node.runAction(buttonAction){
+                    self.toMainMenu()
+                }
+                
             }
         }
     }

@@ -57,6 +57,9 @@
 		089124331B7BB35500F5277B /* BarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 089124321B7BB35500F5277B /* BarButton.png */; };
 		089124351B7BB39C00F5277B /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089124341B7BB39C00F5277B /* BarButton.swift */; };
 		089124371B7BB5C100F5277B /* BarButton2.png in Resources */ = {isa = PBXBuildFile; fileRef = 089124361B7BB5C100F5277B /* BarButton2.png */; };
+		089124391B7BD79000F5277B /* TinyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089124381B7BD79000F5277B /* TinyButton.swift */; };
+		0891243B1B7BD91100F5277B /* SmallButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0891243A1B7BD91100F5277B /* SmallButton.png */; };
+		0891243D1B7BDB5D00F5277B /* SmallButton2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0891243C1B7BDB5D00F5277B /* SmallButton2.png */; };
 		08B2471F1B74E50900EE918D /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B2471E1B74E50900EE918D /* Grid.swift */; };
 		08B247291B750DD700EE918D /* Block1.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B247261B750DD700EE918D /* Block1.png */; };
 		08B2472A1B750DD700EE918D /* Block2.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B247271B750DD700EE918D /* Block2.png */; };
@@ -137,6 +140,9 @@
 		089124321B7BB35500F5277B /* BarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BarButton.png; sourceTree = "<group>"; };
 		089124341B7BB39C00F5277B /* BarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
 		089124361B7BB5C100F5277B /* BarButton2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BarButton2.png; sourceTree = "<group>"; };
+		089124381B7BD79000F5277B /* TinyButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TinyButton.swift; sourceTree = "<group>"; };
+		0891243A1B7BD91100F5277B /* SmallButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallButton.png; sourceTree = "<group>"; };
+		0891243C1B7BDB5D00F5277B /* SmallButton2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallButton2.png; sourceTree = "<group>"; };
 		08B2471E1B74E50900EE918D /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		08B247261B750DD700EE918D /* Block1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Block1.png; sourceTree = "<group>"; };
 		08B247271B750DD700EE918D /* Block2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Block2.png; sourceTree = "<group>"; };
@@ -204,6 +210,8 @@
 				089124281B7B924B00F5277B /* background4.png */,
 				082C6D311B30762A002D7F57 /* background6.png */,
 				082C6D321B30762A002D7F57 /* Ball.png */,
+				0891243C1B7BDB5D00F5277B /* SmallButton2.png */,
+				0891243A1B7BD91100F5277B /* SmallButton.png */,
 				082C6D391B30762A002D7F57 /* paddle.png */,
 			);
 			path = Images;
@@ -263,6 +271,7 @@
 			children = (
 				089123F41B7AAEF100F5277B /* Box.swift */,
 				0891242A1B7B960400F5277B /* LevelButton.swift */,
+				089124381B7BD79000F5277B /* TinyButton.swift */,
 				089124341B7BB39C00F5277B /* BarButton.swift */,
 			);
 			name = DisplayItems;
@@ -471,6 +480,7 @@
 				089123BB1B7A804C00F5277B /* level3 in Resources */,
 				082C6D3D1B30762A002D7F57 /* background6.png in Resources */,
 				082C6D4E1B307907002D7F57 /* IMG_0407.PNG in Resources */,
+				0891243D1B7BDB5D00F5277B /* SmallButton2.png in Resources */,
 				08B247371B75501600EE918D /* engine.sks in Resources */,
 				089123C11B7A804C00F5277B /* level9 in Resources */,
 				089123BD1B7A804C00F5277B /* level5 in Resources */,
@@ -482,6 +492,7 @@
 				08B2472F1B7517A900EE918D /* Block4.png in Resources */,
 				089124291B7B924B00F5277B /* background4.png in Resources */,
 				089123AB1B7A7B7800F5277B /* level1 in Resources */,
+				0891243B1B7BD91100F5277B /* SmallButton.png in Resources */,
 				08D9C1591B306B7800C26C91 /* Main.storyboard in Resources */,
 				089123C21B7A804C00F5277B /* level10 in Resources */,
 				082C6D4F1B307907002D7F57 /* IMG_0408.PNG in Resources */,
@@ -531,6 +542,7 @@
 				089123EB1B7AADA500F5277B /* SKColor+Extensions.swift in Sources */,
 				089123F51B7AAEF100F5277B /* Box.swift in Sources */,
 				089123E71B7AADA500F5277B /* CGVector+Extensions.swift in Sources */,
+				089124391B7BD79000F5277B /* TinyButton.swift in Sources */,
 				089123F11B7AADA500F5277B /* StringUtility.swift in Sources */,
 				089123D21B7AAD4100F5277B /* WonLevelScene.swift in Sources */,
 				089124271B7B910500F5277B /* ChooseLevelScene.swift in Sources */,

@@ -21,11 +21,16 @@ class WonLevelScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func toNextLevel(){
+        let myScene = LevelTransitionScene(size:self.size, data: data)
+        myScene.scaleMode = self.scaleMode
+        let reveal = SKTransition.revealWithDirection(SKTransitionDirection.Left, duration: 0.5)
+        self.view?.presentScene(myScene, transition: reveal)
+    }
+    
     override func didMoveToView(view: SKView) {
         data.level++
-        let myScene = GameScene(size: self.size, data: self.data)
-        myScene.scaleMode = self.scaleMode
-        self.view?.presentScene(myScene)
+        toNextLevel()
     }
 
 }

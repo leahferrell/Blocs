@@ -59,7 +59,7 @@ class MainMenuScene: SKScene {
         let block = SKAction.runBlock {
             let myScene = ChooseLevelScene(size: self.size, data: self.data)
             myScene.scaleMode = self.scaleMode
-            let reveal = SKTransition.crossFadeWithDuration(0.5)
+            let reveal = SKTransition.revealWithDirection(SKTransitionDirection.Left, duration: 0.5)
             self.view?.presentScene(myScene, transition: reveal)
         }
         self.runAction(block)
@@ -68,7 +68,7 @@ class MainMenuScene: SKScene {
     func toStartScene(){
         let myScene = LevelTransitionScene(size: self.size, data: self.data)
         myScene.scaleMode = self.scaleMode
-        let reveal = SKTransition.crossFadeWithDuration(0.5)
+        let reveal = SKTransition.revealWithDirection(SKTransitionDirection.Left, duration: 0.5)
         self.view?.presentScene(myScene, transition: reveal)
     }
     
