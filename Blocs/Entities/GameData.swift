@@ -19,7 +19,7 @@ class GameData {
     
     var lives:Int = 5
     
-    var level:Int = 4
+    var level:Int = 1
     
     init(score: Int, lives: Int, level: Int){
         self.score = score
@@ -28,7 +28,7 @@ class GameData {
     }
     
     convenience init(){
-        self.init(score: 0, lives: 5, level: 4)
+        self.init(score: 0, lives: 5, level: 1)
     }
     
     func resetLevel(){

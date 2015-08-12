@@ -15,9 +15,10 @@ class MainMenuScene: SKScene {
     let data = GameData()
     let buttonLayer = SKNode()
     let buttonAction:SKAction
-    var sceneAction:SKAction!
     
-    let chooseText = "Choose Level"
+    let chooseText = "Play Level"
+    let startText = "Start"
+    let scoresText = "High Scores"
     
     required init(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
@@ -33,13 +34,6 @@ class MainMenuScene: SKScene {
             ])
         
         super.init(size: size)
-        
-        self.sceneAction = SKAction.sequence([
-            SKAction.waitForDuration(0.4),
-            SKAction.runBlock(){
-                self.sceneTapped()
-            }
-        ])
     }
     
     override func didMoveToView(view: SKView) {
@@ -47,15 +41,21 @@ class MainMenuScene: SKScene {
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
         self.addChild(background)
         
-        let point = CGPoint(x: size.width/2, y: size.height/2-400)
+        let point1 = CGPoint(x: size.width/2, y: size.height/2-400)
+        let point2 = CGPoint(x: size.width/2, y: size.height/2-600)
+        let point3 = CGPoint(x: size.width/2, y: size.height/2-800)
         
-        let levelsButton = BarButton(position: point, text: chooseText)
+        let startButton = BarButton(position: point1, text: startText)
+        let chooseButton = BarButton(position: point2, text: chooseText)
+        let scoresButton = BarButton(position: point3, text: scoresText)
         
-        buttonLayer.addChild(levelsButton)
+        buttonLayer.addChild(startButton)
+        buttonLayer.addChild(chooseButton)
+        buttonLayer.addChild(scoresButton)
         addChild(buttonLayer)
     }
     
-    func sceneTapped() {
+    func toChooseLevelScene() {
         let block = SKAction.runBlock {
             let myScene = ChooseLevelScene(size: self.size, data: self.data)
             myScene.scaleMode = self.scaleMode
@@ -65,13 +65,37 @@ class MainMenuScene: SKScene {
         self.runAction(block)
     }
     
+    func toStartScene(){
+        let myScene = LevelTransitionScene(size: self.size, data: self.data)
+        myScene.scaleMode = self.scaleMode
+        let reveal = SKTransition.crossFadeWithDuration(0.5)
+        self.view?.presentScene(myScene, transition: reveal)
+    }
+    
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         for touch:AnyObject in touches {
             let location = touch.locationInNode(buttonLayer)
             let node = buttonLayer.nodeAtPoint(location)
             if node.name == chooseText || node.parent?.name == chooseText{
                 node.runAction(buttonAction)
-                runAction(sceneAction)
+                runAction(SKAction.sequence([
+                    SKAction.waitForDuration(0.4),
+                    SKAction.runBlock(){
+                        self.toChooseLevelScene()
+                    }
+                ]))
+            }
+            else if node.name == startText || node.parent?.name == startText {
+                node.runAction(buttonAction)
+                runAction(SKAction.sequence([
+                    SKAction.waitForDuration(0.4),
+                    SKAction.runBlock(){
+                        self.toStartScene()
+                    }
+                    ]))
+            }
+            else if node.name == scoresText || node.parent?.name == scoresText {
+                node.runAction(buttonAction)
             }
         }
 

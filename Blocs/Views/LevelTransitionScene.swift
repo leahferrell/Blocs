@@ -38,13 +38,16 @@ class LevelTransitionScene: SKScene {
             SKAction.scaleTo(1.25, duration: 0.2),
             SKAction.scaleTo(1.0, duration: 0.2)])
         
-        levelLabel.runAction(SKAction.repeatActionForever(action))
+        //levelLabel.runAction(SKAction.repeatActionForever(action))
         
         self.addChild(levelLabel)
-    }
-    
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        transitionToLevel()
+        
+        runAction(SKAction.sequence([
+            SKAction.waitForDuration(0.75),
+            SKAction.runBlock(){
+                self.transitionToLevel()
+            }
+            ]))
     }
     
     func transitionToLevel(){
